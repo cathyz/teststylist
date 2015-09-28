@@ -8,9 +8,9 @@ require '/home/vcap/app/lib/vendor/autoload.php';
 $app = new Bullet\App();
 $app->path('v1', function($request) use ($app) {
 
-  $app->path('products', function($request) use ($app) {
+  $app->path('user', function($request) use ($app) {
     // GET /v1/products
-    // list all products
+    $app->path('login', function($request) use ($app) {
     $app->get(function() use ($app)  {
       //$products = Product::all();
     	$data = array(
@@ -27,9 +27,22 @@ $app->path('v1', function($request) use ($app) {
         );
       return $data;
     });
-
   });
-    
+ });
+  $app->path('logout', function($request) use ($app) {
+    $app->post(function() use ($app)  {
+      //$products = Product::all();
+    	$data = array(
+            'status' => array(
+                'code' => '1000',
+                 'message' => 'User logged out'
+                )
+            
+        );
+      return $data;
+    });
+  });
+ });
 });
 
 echo $app->run(new Bullet\Request());
