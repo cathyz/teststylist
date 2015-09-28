@@ -28,7 +28,7 @@ $app->path('v1', function($request) use ($app) {
       return $data;
     });
   });
- });
+ 
   $app->path('logout', function($request) use ($app) {
     $app->post(function() use ($app)  {
       //$products = Product::all();
@@ -40,9 +40,9 @@ $app->path('v1', function($request) use ($app) {
             
         );
       return $data;
-    });
-  });
- });
-});
+    }); //end post
+  }); //end path logout
+ }); //end path user
+}); //end path v1
 
 echo $app->run(new Bullet\Request());
