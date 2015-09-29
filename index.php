@@ -11,8 +11,9 @@ $app->path('v1', function($request) use ($app) {
   $app->path('user', function($request) use ($app) {
     // GET /v1/products
     $app->path('loginfacebook', function($request) use ($app) {
-    $app->post(function() use ($app)  {
+    $app->post(function($request) use ($app)  {
       //$products = Product::all();
+    	$token = $request->post('facebook_token');
     	$fb = new Facebook\Facebook([
   'app_id' => '302834359830725',
   'app_secret' => 'f21f8fe905aa6ce0a0dac45e65c06064',
@@ -21,7 +22,7 @@ $app->path('v1', function($request) use ($app) {
 
 try {
   // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name,first_name,last_name,email,picture{url}', 'CAAETbR5xiMUBAP02KCOHgDOXEfLgpim2uv0Ko66KZCPRQJKsHiOS0P6tZC4m9BP6oS0MgrRuk1A2LiVZCX9ZAEM14KjJdoq9SbCZBR8sl6iqO2Evv2f0ycmDpRZA8zxZCiPhtA7tCHQYu5swSSdQZCZA7DU608JjGjfHJBCH74fDQ5UwnCLZBprTzmJypLsZBJnyhJ5iZA7TZAqXDGQZDZD');
+  $response = $fb->get('/me?fields=id,name,first_name,last_name,email,picture{url}', $token);
    
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
   echo 'Graph returned an error: ' . $e->getMessage();
@@ -39,7 +40,7 @@ $picobjurl=$picobj['url'];
     	$data = array(
             'status' => array(
                 'code' => '1000',
-                 'message' => 'User logged out'
+                 'message' => 'New Device Registered'
                 ),
             'user' => array(
             	'id'=> '123abc456',
@@ -53,7 +54,7 @@ $picobjurl=$picobj['url'];
             'user_public_key'=>'72ae5e57d318f4005808855ca5101e5073bb26ca'
             
         );
-      return $data;
+      return json_encode($data);
     });
   });
  $app->path('login', function($request) use ($app) {
@@ -76,7 +77,7 @@ $picobjurl=$picobj['url'];
             'user_public_key'=>'72ae5e57d318f4005808855ca5101e5073bb26ca'
             
         );
-      return $data;
+      return json_encode($data);
     }); //end post
   }); //end path logout
   $app->path('logout', function($request) use ($app) {
